@@ -1,127 +1,41 @@
-// This code open a window and draw a triangle; using Modern OpenGL
-// based on the code of The Cherno OpenGL tutorial
-
-#include <GL/glew.h>       // first of all
+/*This code uses Modern OpenGL to render geometry, 
+    and uses an abstraction of the VertexBuffer, VertexArray, and Shader.
+  The code is based on The Cherno OpenGL tutorial in https://youtube.com/playlist?list=PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2
+*/
+#include <GL/glew.h>       
 #include <GLFW/glfw3.h>
 
 #include <iostream>
-#include <fstream>  // to read the shaders file
+#include <fstream>  
 #include <string>
 #include <sstream>
 
-#define ASSERT(x) if (!(x)) __debugbreak();
-#define GLCall(x) GLClearError();\
-    x;\
-    ASSERT(GLLogCall(#x, __FILE__, __LINE__))
+#include "Renderer.h"
 
-static void GLClearError()
-{
-    while (glGetError() != GL_NO_ERROR);
-}
-
-static bool GLLogCall(const char* function, const char* file, int line)
-{
-    while (GLenum error = glGetError())
-    {
-        std::cout << "[OpenGL Error] (" << error << "): " << function << " " << ":" << line << std::endl;
-        return false;
-    }
-    return true;
-}
-
-struct ShaderProgramSource
-{
-    std::string VertexSource;
-    std::string FragmentSource;
-};
-
-static ShaderProgramSource ParseShader(const std::string& filepath)
-{
-    std::ifstream stream(filepath);  //open the file
-
-    enum class ShaderType
-    {
-        NONE = -1, VERTEX = 0, FRAGMENT = 1
-    };
-
-    std::string line;
-    std::stringstream ss[2];
-    ShaderType type = ShaderType::NONE;
-
-    // read line by line and find the beginning of each shader
-    while (getline(stream, line))
-    {
-        if (line.find("#shader") != std::string::npos)
-        {
-            if (line.find("vertex") != std::string::npos)
-                type = ShaderType::VERTEX;       //set mode to vertex
-            else if (line.find("fragment") != std::string::npos)
-                type = ShaderType::FRAGMENT;    // set mode to fragment
-        }
-        else
-        {
-            ss[(int)type] << line << '\n';
-        }
-    }
-    return { ss[0].str(), ss[1].str() };
-}
-
-static unsigned int CompileShader(unsigned int type, const std::string& source)
-{
-    unsigned int id = glCreateShader(type);
-    const char* src = source.c_str(); //pointer to the begining of the array as source[0]
-    glShaderSource(id, 1, &src, nullptr);
-    glCompileShader(id);
-
-    //Error handling
-    int result;
-    glGetShaderiv(id, GL_COMPILE_STATUS, &result);
-    if (result == GL_FALSE)
-    {
-        int length;
-        glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
-        char* message = (char*)alloca(length * sizeof(char)); // to identify the error
-        glGetShaderInfoLog(id, length, &length, message);
-        std::cout << "Failed to compile " << (type == GL_VERTEX_SHADER ? "vertex" : "fragment") << "shader!" << std::endl;
-        std::cout << message << std::endl;
-        glDeleteShader(id);
-        return 0;
-    }
-
-    return id;
-}
-
-/* to create the shader*/
-static int CreateShader(const std::string& vertexShader, const std::string& fragmentShader)
-{
-    unsigned int program = glCreateProgram();  //create the object for the shader
-                                               // and go to Compile Shader function
-                                               // and back here
-    unsigned int vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
-    unsigned int fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
-
-    glAttachShader(program, vs);
-    glAttachShader(program, fs);
-    glLinkProgram(program);
-    glValidateProgram(program);
-
-    glDeleteShader(vs);  //to detach the intermediates
-    glDeleteShader(fs);
-
-    return program;
-}
+#include "VertexBuffer.h"
+#include "VertexBufferLayout.h"
+#include "IndexBuffer.h"
+#include "VertexArray.h"
+#include "Shader.h"
+#include "Texture.h"
 
 int main(void)
 {
+    /* Declare window */
     GLFWwindow* window;
 
     /* Initialize the library */
     if (!glfwInit())
         return -1;
 
+    // to create the vertex array
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
 
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+    window = glfwCreateWindow(640, 480, "Rendering a square", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -133,87 +47,111 @@ int main(void)
 
     glfwSwapInterval(1);  //to synchronize the animation
 
-    /* 1 */
-    //glewInit();
+    /* Initialize GLEW */
     if (glewInit() != GLEW_OK)
         std::cout << "Error!" << std::endl;
 
     std::cout << glGetString(GL_VERSION) << std::endl;
-    /*end 1*/
-
-    float positions[] = {
-        -0.5f, -0.5f,
-         0.5f, -0.5f,
-         0.5f,  0.5f,
-        -0.5f,  0.5f,
-    };
-
-    unsigned int indices[] = {
-        0, 1, 2,
-        2, 3, 0
-    };
-
-    //first, create the buffer with the size and provide the data or given it later
-    unsigned int buffer;        // the buffer ID   see docs.gl
-    GLCall(glGenBuffers(1, &buffer));   // generate the buffer(s) object(s) 
-    GLCall(glBindBuffer(GL_ARRAY_BUFFER, buffer)); //bind (select) a named buffer object 
-    GLCall(glBufferData(GL_ARRAY_BUFFER, 6 * 2 * sizeof(float), positions, GL_STATIC_DRAW)); //creates and initialize a buffer's object data store
-
-    //third make the draw call inside the loop 
-
-    //fourth pointer to the attributes & enable the attributes of eache vertex
-    GLCall(glEnableVertexAttribArray(0));  //the index of the vertex attribute to be enabled
-    GLCall(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0));  //define an array of generic vertex attribute data
-
-    //Now tell the GPU that use the Index Buffer
-    unsigned int ibo;        // the index buffer object - always unsigned int
-    GLCall(glGenBuffers(1, &ibo));   // generate the buffer(s) object(s) pointing to the Index buffer
-    GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo)); //bind (select) the index buffer object 
-    GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW)); //creates and initialize a buffer's object data store
-
-
-    ShaderProgramSource source = ParseShader("res/shaders/Basic.shader");
-    unsigned int shader = CreateShader(source.VertexSource, source.FragmentSource);
-    GLCall(glUseProgram(shader)); // to run the program
-
-    //use the uniform
-    int location = glGetUniformLocation(shader, "u_Color");     //to specify the uniform location
-    ASSERT(location != -1); //if uniform could not find
-    GLCall(glUniform4f(location, 0.2f, 0.3f, 0.8f, 1.0f));  //using the uniform in c++ code
-
-    // to create the animation that change the color 
-    float r = 0.0f;
-    float increment = 0.05f;
-
-
-    /* Loop until the user closes the window */
-    while (!glfwWindowShouldClose(window))
     {
-        /* Render here */
-        GLCall(glClear(GL_COLOR_BUFFER_BIT));
+        // include the texture positions to be mapped
+        float positions[] = {
+            /* Geometry position  |  Texture position */
+            /* Images normalized [0, 1]*/
+            -0.5f, -0.5f, 0.0f, 0.0f,      // 0 the bottom left
+             0.5f, -0.5f, 1.0f, 0.0f,      // 1 the bottom right side
+             0.5f,  0.5f, 1.0f, 1.0f,      // 1 the top right
+            -0.5f,  0.5f, 0.0f, 1.0f,      // 2 the top left
+        };
 
-        GLCall(glUniform4f(location, r, 0.3f, 0.8f, 1.0f));
+        /* Data sent to Index Buffer */
+        unsigned int indices[] = {
+            0, 1, 2,
+            2, 3, 0
+        };
 
-        //GLCall(glDrawElements(GL_TRIANGLES, 6, GL_INT, nullptr)); //ERROR
-        GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
+        //defining how openGL is going to blend alpha
+        GLCall(glEnable(GL_BLEND));                                 
+        GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));  //src alpha = 0; dest = 1 - 0 = 0
+       
 
-        //part of the animation
-        if (r > 1.0f)
-            increment = -0.05f;
-        else if (r < 0.0f)
-            increment = 0.05f;
+        /* Declare vertex array, and send data to it */
+        VertexArray va;
+        /* 4 elements, each has 4 elements:  2 for position, 2 for texture's corrspondence */
+        VertexBuffer vb(positions, 4 * 4 * sizeof(float)); // expand the buffer to 4 elements per vertex
+        
+        /* Configure Vertex Buffer 
+           Add data to be taken from the buffer, and from where.
+         */
+        VertexBufferLayout layout;
+        layout.Push<float>(2);
+        layout.Push<float>(2);  // adding to more attributes
+        va.AddBuffer(vb, layout);
 
-        r += increment;
+        /* Declare index buffer, specifying its elements */
+        IndexBuffer ib(indices, 6);
 
-        /* Swap front and back buffers */
-        glfwSwapBuffers(window);
+        /* Specify shader's path, bind it, and define uniforms */
+        Shader shader("res/shaders/Basic.shader");
+        shader.Bind();
+        shader.SetUniform4f("u_Color", 0.2f, 0.3f, 0.8f, 1.0f);
 
-        /* Poll for and process events */
-        glfwPollEvents();
+        /* Specify texture's path, bind it, and define uniform */
+        Texture texture("res/textures/texture1.jpg");
+        texture.Bind();
+        /* Identifica lo que está en el buffer (u_Texture), es lo que se usará en el fragment shader.*/
+        /* buscará ese texture en el slot de las texturas especificado */
+        /* => encontrar en el shader el nombre especificado, y asignar ese valor*/
+        /* A´sígnale a u_Texture lo que se encuentra en el slot 0*/
+        shader.SetUniform1i("u_Texture", 0);  //the slot is 0
+
+        /* Clean memory up */
+        va.Unbind();
+        vb.Unbind();    //GLCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
+        ib.Unbind();    //GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
+        shader.UnBind();  //GLCall(glUseProgram(0));
+        
+        /* Declare renderer */
+        Renderer renderer;
+
+        // to create the animation that change the color 
+        float r = 0.0f;
+        float increment = 0.05f;
+
+        /* Loop until the user closes the window */
+        while (!glfwWindowShouldClose(window))
+        {
+            /* Render here */
+            renderer.Clear();  //GLCall(glClear(GL_COLOR_BUFFER_BIT));
+
+            // use the shader and bind the buffer and ibo each time in case that the buffer change
+            shader.Bind();   //GLCall(glUseProgram(shader));
+            shader.SetUniform4f("u_Color", r, 0.3f, 0.8f, 1.0f);   //GLCall(glUniform4f(location, r, 0.3f, 0.8f, 1.0f));
+
+            /* Draw what's sent through vertex array, index buffer, and shader */
+            renderer.Draw(va, ib, shader);
+
+            /* DRAW CALL */
+            GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
+
+            //part of the animation
+            if (r > 1.0f)
+                increment = -0.05f;
+            else if (r < 0.0f)
+                increment = 0.05f;
+
+            r += increment;
+
+            /* Swap front and back buffers */
+            glfwSwapBuffers(window);
+
+            /* Poll for and process events */
+            glfwPollEvents();
+        }
+
     }
-
-    glDeleteProgram(shader);
-
     glfwTerminate();
     return 0;
 }
+
+
+

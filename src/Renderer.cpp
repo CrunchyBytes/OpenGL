@@ -2,11 +2,13 @@
 
 #include <iostream>
 
+/* Check if an OpenGL error has been returned */
 void GLClearError()
 {
     while (glGetError() != GL_NO_ERROR);
 }
 
+/* Report an OpenGL error, if any */
 bool GLLogCall(const char* function, const char* file, int line)
 {
     while (GLenum error = glGetError())
@@ -17,6 +19,7 @@ bool GLLogCall(const char* function, const char* file, int line)
     return true;
 }
 
+/* Render here*/
 void Renderer::Clear() const
 {
     GLCall(glClear(GL_COLOR_BUFFER_BIT));

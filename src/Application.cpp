@@ -96,7 +96,7 @@ int main(void)
         shader.SetUniform4f("u_Color", 0.2f, 0.3f, 0.8f, 1.0f);
 
         /* Specify texture's path, bind it, and define uniform */
-        Texture texture("res/textures/texture1.jpg");
+        Texture texture("res/textures/texture0.png");
         texture.Bind();
         /* Identifica lo que está en el buffer (u_Texture), es lo que se usará en el fragment shader.*/
         /* buscará ese texture en el slot de las texturas especificado */

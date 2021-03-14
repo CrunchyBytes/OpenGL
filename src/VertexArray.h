@@ -8,17 +8,18 @@ class VertexBufferLayout;
 class VertexArray
 {
 private:
-	/* Identifier, to use when rendering. */
+	/* Identifier */
 	unsigned int m_RendererID;
 public:
-	/* Constructor and Destructor */
+	/* Constructor */
 	VertexArray();
+	/* Destructor */
 	~VertexArray();
 
 	/* Add data to the buffer */
 	void AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& layout);
 
-	/* Bind and unbind */
+	/* Bind and Unbind */
 	void Bind() const;
 	void Unbind() const;
 };

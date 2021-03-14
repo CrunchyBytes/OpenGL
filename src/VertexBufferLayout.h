@@ -5,10 +5,14 @@
 
 struct VertexBufferElement
 {
+	/* Element's data type */
 	unsigned int type;
+	/* Number of attributes */
 	unsigned int count;
+	/* Normalized? */
 	unsigned char normalized;
 
+	/* Return data type's size, in bytes */
 	static unsigned int GetSizeOfType(unsigned int type)
 	{
 		switch (type)
@@ -17,6 +21,7 @@ struct VertexBufferElement
 			case GL_UNSIGNED_INT:	return 4;
 			case GL_UNSIGNED_BYTE:	return 1; 
 		}
+		/* Exit program if unrecognized type */
 		ASSERT(false);
 		return 0;
 	}
@@ -25,7 +30,9 @@ struct VertexBufferElement
 class VertexBufferLayout
 {
 private:
+	/* List of all stored elements */
 	std::vector<VertexBufferElement> m_Elements;
+	/* Required memory  */
 	unsigned int m_Stride;
 public:
 	VertexBufferLayout()

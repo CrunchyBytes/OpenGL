@@ -2,6 +2,7 @@
 
 #include "Renderer.h"
 
+/* Generate one vertex attribute buffer */
 VertexBuffer::VertexBuffer(const void* data, unsigned int size)
 {
     GLCall(glGenBuffers(1, &m_RendererID));   
@@ -9,16 +10,19 @@ VertexBuffer::VertexBuffer(const void* data, unsigned int size)
     GLCall(glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW)); 
 }
 
+/* Destroy specified buffer */
 VertexBuffer::~VertexBuffer()
 {
     GLCall(glDeleteBuffers(1, &m_RendererID));
 }
 
+/* Make the buffer store vertex attributes */
 void VertexBuffer::Bind() const
 {
     GLCall(glBindBuffer(GL_ARRAY_BUFFER, m_RendererID));
 }
 
+/* Remove's buffer's target */
 void VertexBuffer::Unbind() const
 {
     GLCall(glBindBuffer(GL_ARRAY_BUFFER, 0));

@@ -6,7 +6,12 @@
 #include "IndexBuffer.h"
 #include "Shader.h"
 
+/* Define macros */
+/* Error manager */
 #define ASSERT(x) if (!(x)) __debugbreak();
+/* Execute given function
+   If there's an error, report it
+ */
 #define GLCall(x) GLClearError();\
     x;\
     ASSERT(GLLogCall(#x, __FILE__, __LINE__))

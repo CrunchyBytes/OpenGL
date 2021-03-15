@@ -11,9 +11,13 @@ layout(location = 1) in vec2 texCoord;
 /* Lo que lees en el Vertex, guárdalos en memoria, y lo va sacar en este elemento */
 out vec2 v_TexCoord;
 
+uniform mat4 u_MVP;
+uniform mat4 u_MVR;
+
 void main()
 {
-	gl_Position = position;
+	/* Transform original object's position using the MVP uniform */
+	gl_Position = u_MVP * position;
 	/* texCoord, obtenido del buffer--vector de 2 elementos--guárdalo en v_TexCoord que va de salida a la siguiente etapa de máquina de estados/pipeline (Fragment Shader)*/
 	v_TexCoord = texCoord;
 };

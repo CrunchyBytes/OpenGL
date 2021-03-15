@@ -102,6 +102,8 @@ int main(void)
          * Generar matriz de proyección, y ajustarlo a un cuadrado.         
          */
         glm::mat4 proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
+        /* Link matrix to shader's projection uniform */
+        shader.SetUniformMat4f("u_MVP", proj);
 
         /* Specify texture's path, bind it, and define uniform */
         Texture texture("res/textures/texture0.png");

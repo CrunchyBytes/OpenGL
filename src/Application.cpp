@@ -105,6 +105,15 @@ int main(void)
         /* Link matrix to shader's projection uniform */
         shader.SetUniformMat4f("u_MVP", proj);
 
+        /* GLM rotation matrix 
+         * Initialized with identity matrix
+         */
+        glm::mat4 rotation = glm::mat4(1.0f);
+        /* Rotate said matrix by 90 radians */
+        rotation = glm::rotate(rotation, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+        shader.SetUniformMat4f("u_MVR", rotation);
+
+
         /* Specify texture's path, bind it, and define uniform */
         Texture texture("res/textures/texture0.png");
         texture.Bind();

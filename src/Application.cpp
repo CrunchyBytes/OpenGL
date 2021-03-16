@@ -99,7 +99,9 @@ int main(void)
         shader.SetUniform4f("u_Color", 0.2f, 0.3f, 0.8f, 1.0f);
 
         /* Using transformations      
-         * Generar matriz de proyección, y ajustarlo a un cuadrado.         
+         * Generar matriz de proyección, y ajustarlo a un cuadrado.
+         * Specify boundaries of window: any position outside them will not appear.
+         * Multiplies array of vertex positions => Converted to [-1, 1] space
          */
         glm::mat4 proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
         /* Link matrix to shader's projection uniform */

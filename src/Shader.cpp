@@ -124,10 +124,12 @@ void Shader::SetUniform4f(const std::string& name, float v0, float v1, float v2,
 
 /* Create matrix of 4 OpenGL floats:
  * Locate where the uniform is in the shader.
- * Not normalized.
+ * Providing only 1 matrix
+ * Not transposed (column-major).
  */
 void Shader::SetUniformMat4f(const std::string& name, const glm::mat4& matrix)
 {
+    /* v indicates that we're passing array */
     GLCall(glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, &matrix[0][0]));
 }
 

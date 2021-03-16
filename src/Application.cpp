@@ -38,7 +38,7 @@ int main(void)
 
 
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(640, 480, "Rendering a square", NULL, NULL);
+    window = glfwCreateWindow(960, 540, "Rendering a square", NULL, NULL);
     if (!window)
     {
         glfwTerminate();

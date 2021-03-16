@@ -59,11 +59,13 @@ int main(void)
         // include the texture positions to be mapped
         float positions[] = {
             /* Geometry position  |  Texture position */
-            /* Images normalized [0, 1]*/
-            -0.5f, -0.5f, 0.0f, 0.0f,      // 0 the bottom left
-             0.5f, -0.5f, 1.0f, 0.0f,      // 1 the bottom right side
-             0.5f,  0.5f, 1.0f, 1.0f,      // 1 the top right
-            -0.5f,  0.5f, 0.0f, 1.0f,      // 2 the top left
+            /* Images normalized [0, 1]
+             * Adjust geometry positions because vertex position space has been redefined
+             */
+             100.0f, 100.0f, 0.0f, 0.0f,      // 0 the bottom left
+             200.0f, 100.0f, 1.0f, 0.0f,      // 1 the bottom right side
+             200.0f, 200.0f, 1.0f, 1.0f,      // 1 the top right
+             100.0f, 200.0f, 0.0f, 1.0f,      // 2 the top left
         };
 
         /* Data sent to Index Buffer */
@@ -102,8 +104,13 @@ int main(void)
          * Generar matriz de proyección, y ajustarlo a un cuadrado.
          * Specify boundaries of window: any position outside them will not appear.
          * Multiplies array of vertex positions => Converted to [-1, 1] space
+         * Change it to be pixel space (1:1 mapping), based on window resolution
          */
-        glm::mat4 proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
+        glm::mat4 proj = glm::ortho(0.0f, 960.0f, 0.0f, 540.0f, -1.0f, 1.0f);
+        glm::vec4 vp(100.0f, 100.0f, 0.0f, 1.0f);
+
+        glm::vec4 result = proj * vp;
+
         /* Link matrix to shader's projection uniform */
         shader.SetUniformMat4f("u_MVP", proj);
 

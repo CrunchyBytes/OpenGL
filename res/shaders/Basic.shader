@@ -20,7 +20,7 @@ uniform mat4 u_P; // Projection uniform
 void main()
 {
 	/* Transform original object's position using the MVP uniform, and then the rotation uniform  */
-	gl_Position = u_MVR * u_MVP * position;
+	gl_Position = u_M * position;
 	/* texCoord, obtenido del buffer--vector de 2 elementos--guárdalo en v_TexCoord que va de salida a la siguiente etapa de máquina de estados/pipeline (Fragment Shader)*/
 	v_TexCoord = texCoord;
 };

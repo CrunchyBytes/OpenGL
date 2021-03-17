@@ -23,8 +23,12 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 
+#include <chrono>
+
 int main(void)
 {
+    auto t_start = std::chrono::high_resolution_clock::now();
+
     /* Declare window */
     GLFWwindow* window;
 
@@ -100,10 +104,7 @@ int main(void)
         shader.SetUniform4f("u_Color", 0.2f, 0.3f, 0.8f, 1.0f);
 
         /* TRANSFORMATION MATRICES----------------*/
-        /* Model matrix */
-        glm::mat4 model = glm::mat4(1.0f);
-        model = glm::rotate(model, glm::radians(-45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-        shader.SetUniformMat4f("u_M", model);
+        
         
         /* Using transformations      
          * Generar matriz de proyección, y ajustarlo a un cuadrado.
@@ -147,7 +148,7 @@ int main(void)
 
         /* Loop until the user closes the window */
         while (!glfwWindowShouldClose(window))
-        {
+        {            
             /* Render here */
             renderer.Clear();  //GLCall(glClear(GL_COLOR_BUFFER_BIT));
 
@@ -157,6 +158,18 @@ int main(void)
 
             /* Draw what's sent through vertex array, index buffer, and shader */
             renderer.Draw(va, ib, shader);
+
+            /* Model matrix */
+            auto t_now = std::chrono::high_resolution_clock::now();
+            float time = std::chrono::duration_cast<std::chrono::duration<float>>(t_now - t_start).count();
+
+            glm::mat4 model = glm::mat4(1.0f);
+            model = glm::rotate(
+                model,
+                time * glm::radians(180.0f),
+                glm::vec3(0.0f, 0.0f, 1.0f)
+            );
+            shader.SetUniformMat4f("u_M", model);
 
             /* DRAW CALL */
             GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));

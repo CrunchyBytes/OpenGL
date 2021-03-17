@@ -103,6 +103,7 @@ int main(void)
         /* Model matrix */
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::rotate(model, glm::radians(-45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+        shader.SetUniformMat4f("u_M", model);
         
         /* Using transformations      
          * Generar matriz de proyección, y ajustarlo a un cuadrado.

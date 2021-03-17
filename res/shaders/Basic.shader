@@ -13,6 +13,9 @@ out vec2 v_TexCoord;
 
 uniform mat4 u_MVP; // Model View Projection uniform
 uniform mat4 u_MVR; // Rotation uniform
+uniform mat4 u_M; // Model uniform
+uniform mat4 u_V; // View uniform
+uniform mat4 u_P; // Projection uniform
 
 void main()
 {

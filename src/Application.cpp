@@ -71,36 +71,36 @@ int main(void)
             -0.5f,  0.5f, 0.0f, 1.0f,      // 3 the top left
             */
             // X      Y     Z     R     G     B     U     V
-            -0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,  // 0
-         0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,      // 1
-         0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,      // 2
+            -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,  // 0
+         0.5f, -0.5f, -0.5f, 1.0f, 0.0f,      // 1
+         0.5f,  0.5f, -0.5f, 1.0f, 1.0f,      // 2
          //0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,      // 2
-        -0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,      // 3
+        -0.5f,  0.5f, -0.5f, 0.0f, 1.0f,      // 3
         //-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,      // 0
 
-        -0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,      // 4
-         0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,      // 5
-         0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,      // 6
+        -0.5f, -0.5f,  0.5f, 0.0f, 0.0f,      // 4
+         0.5f, -0.5f,  0.5f, 1.0f, 0.0f,      // 5
+         0.5f,  0.5f,  0.5f, 1.0f, 1.0f,      // 6
          //0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,      // 6
-        -0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,      // 7
+        -0.5f,  0.5f,  0.5f, 0.0f, 1.0f,      // 7
         //-0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,      // 4
 
-        -0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,      // 8
-        -0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,      // 9
-        -0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,      // 10
+        -0.5f,  0.5f,  0.5f, 1.0f, 0.0f,      // 8
+        -0.5f,  0.5f, -0.5f, 1.0f, 1.0f,      // 9
+        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,      // 10
         //-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,      // 10
         //-0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,      // 4
         //-0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,      // 8
 
-         0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,      // 11
+         0.5f,  0.5f,  0.5f, 1.0f, 0.0f,      // 11
          //0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,      // 2
-         0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,      // 12
+         0.5f, -0.5f, -0.5f, 0.0f, 1.0f,      // 12
          //0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,      // 12
-         0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,      // 13
+         0.5f, -0.5f,  0.5f, 0.0f, 0.0f,      // 13
          //0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,      // 11
 
         //-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,      // 10
-         0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,      // 14
+         0.5f, -0.5f, -0.5f, 1.0f, 1.0f,      // 14
          //0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,      // 5
          //0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,      // 5
         //-0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,      // 4
@@ -110,7 +110,7 @@ int main(void)
          //0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,      // 2
          //0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,      // 11
          //0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,      // 11
-        -0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,      // 15
+        -0.5f,  0.5f,  0.5f, 0.0f, 0.0f,      // 15
         //-0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f       // 3
         };
 
@@ -145,14 +145,14 @@ int main(void)
 
         /* Declare vertex array, and send data to it */
         VertexArray va;        
-        VertexBuffer vb(positions, 36 * 8 * sizeof(float)); // 36 vertices, each with 8 elements: 2 for position, 2 for texture's corrspondence
+        VertexBuffer vb(positions, 36 * 5 * sizeof(float)); // 36 vertices, each with 5 elements: 3 for position (x, y, z), 2 for texture's correspondence
         
         /* Configure Vertex Buffer 
            Add data to be taken from the buffer, and from where.
          */
         VertexBufferLayout layout;
         layout.Push<float>(3);  // X, Y, Z attributes
-        layout.Push<float>(3);  // R, G, B attributes
+        //layout.Push<float>(3);  // R, G, B attributes
         layout.Push<float>(2);  // adding to more attributes
         va.AddBuffer(vb, layout);
 
@@ -242,7 +242,7 @@ int main(void)
             /* DRAW CALL */
             GLCall(glDrawElements(
                 GL_TRIANGLES,       // drawing triangles
-                36,                  // 6 indices
+                36,                 // 36 indices
                 GL_UNSIGNED_INT,    // type of data in index buffer
                 nullptr)            // pointer to index buffer (null because already bound)
             );/*

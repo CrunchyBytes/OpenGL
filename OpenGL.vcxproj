@@ -583,6 +583,7 @@
     <ClInclude Include="src\VertexBufferLayout.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\textures\doge.jpg" />
     <Image Include="res\textures\texture0.png" />
     <Image Include="res\textures\texture1.jpg" />
   </ItemGroup>

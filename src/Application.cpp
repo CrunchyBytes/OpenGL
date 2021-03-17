@@ -65,16 +65,77 @@ int main(void)
         float positions[] = {
             /* Geometry position  |  Texture position */
             /* Images normalized [0, 1]*/
-            -0.5f, -0.5f, 0.0f, 0.0f,      // 0 the bottom left
+            /*-0.5f, -0.5f, 0.0f, 0.0f,      // 0 the bottom left
              0.5f, -0.5f, 1.0f, 0.0f,      // 1 the bottom right side
-             0.5f,  0.5f, 1.0f, 1.0f,      // 1 the top right
-            -0.5f,  0.5f, 0.0f, 1.0f,      // 2 the top left
+             0.5f,  0.5f, 1.0f, 1.0f,      // 2 the top right
+            -0.5f,  0.5f, 0.0f, 1.0f,      // 3 the top left
+            */
+            // X      Y     Z     R     G     B     U     V
+            -0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,  // 0
+         0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,      // 1
+         0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,      // 2
+         //0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,      // 2
+        -0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,      // 3
+        //-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,      // 0
+
+        -0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,      // 4
+         0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,      // 5
+         0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,      // 6
+         //0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,      // 6
+        -0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,      // 7
+        //-0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,      // 4
+
+        -0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,      // 8
+        -0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,      // 9
+        -0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,      // 10
+        //-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,      // 10
+        //-0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,      // 4
+        //-0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,      // 8
+
+         0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,      // 11
+         //0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,      // 2
+         0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,      // 12
+         //0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,      // 12
+         0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,      // 13
+         //0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,      // 11
+
+        //-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,      // 10
+         0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,      // 14
+         //0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,      // 5
+         //0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,      // 5
+        //-0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,      // 4
+        //-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,      // 10
+
+        //-0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,      // 3
+         //0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,      // 2
+         //0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,      // 11
+         //0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,      // 11
+        -0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,      // 15
+        //-0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f       // 3
         };
 
         /* Data sent to Index Buffer */
         unsigned int indices[] = {
+            /*0, 1, 2,    // 1st triangle has vertices 0, 1, 2
+            2, 3, 0     // 2nd triangle has vertices 2, 3, 0*/
+
             0, 1, 2,
-            2, 3, 0
+            2, 3, 0,
+
+            4, 5, 6,
+            6, 7, 4,
+
+            8, 9, 10,
+            10, 4, 8,
+
+            11, 2, 12,
+            12, 13, 11,
+
+            10, 14, 5,
+            5, 4, 10,
+
+            3, 2, 11,
+            11, 15, 3
         };
 
         //defining how openGL is going to blend alpha
@@ -84,18 +145,19 @@ int main(void)
 
         /* Declare vertex array, and send data to it */
         VertexArray va;        
-        VertexBuffer vb(positions, 4 * 4 * sizeof(float)); // 4 vertices, each with 4 elements:  2 for position, 2 for texture's corrspondence
+        VertexBuffer vb(positions, 36 * 8 * sizeof(float)); // 36 vertices, each with 8 elements: 2 for position, 2 for texture's corrspondence
         
         /* Configure Vertex Buffer 
            Add data to be taken from the buffer, and from where.
          */
         VertexBufferLayout layout;
-        layout.Push<float>(2);
+        layout.Push<float>(3);  // X, Y, Z attributes
+        layout.Push<float>(3);  // R, G, B attributes
         layout.Push<float>(2);  // adding to more attributes
         va.AddBuffer(vb, layout);
 
         /* Declare index buffer, specifying its elements */
-        IndexBuffer ib(indices, 6);
+        IndexBuffer ib(indices, 36);
 
         /* Specify shader's path, bind it, and define uniforms */
         Shader shader("res/shaders/Basic.shader");
@@ -176,7 +238,17 @@ int main(void)
             shader.SetUniformMat4f("u_M", model);   // perform model transformation in vertex shader
 
             /* DRAW CALL */
-            GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
+            GLCall(glDrawElements(
+                GL_TRIANGLES,       // drawing triangles
+                36,                  // 6 indices
+                GL_UNSIGNED_INT,    // type of data in index buffer
+                nullptr)            // pointer to index buffer (null because already bound)
+            );/*
+            GLCall(glDrawArrays(
+                GL_TRIANGLES,   // drawing triangles
+                0,
+                36              // 1 cube = 6 sides * 2 triangles * 3 vertices
+            ));*/
 
             //part of the animation
             if (r > 1.0f)

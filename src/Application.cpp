@@ -210,12 +210,14 @@ int main(void)
         // to create the animation that change the color 
         float r = 0.0f;
         float increment = 0.05f;
+        glEnable(GL_DEPTH_TEST);
 
         /* Loop until the user closes the window */
         while (!glfwWindowShouldClose(window))
         {            
             /* Render here */
-            renderer.Clear();
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            //renderer.Clear();
 
             // use the shader and bind the buffer and ibo each time in case that the buffer change
             shader.Bind();

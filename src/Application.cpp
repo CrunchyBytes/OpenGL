@@ -27,6 +27,7 @@
 
 int main(void)
 {
+    /* Take time at beginning of execution */
     auto t_start = std::chrono::high_resolution_clock::now();
 
     /* Declare window */
@@ -43,7 +44,7 @@ int main(void)
 
 
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(640, 480, "Rendering a square", NULL, NULL);
+    window = glfwCreateWindow(640, 480, "Rendering a textured cube", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -63,79 +64,51 @@ int main(void)
     {
         // include the texture positions to be mapped
         float positions[] = {
-            /* Geometry position  |  Texture position */
-            /* Images normalized [0, 1]*/
-            /*-0.5f, -0.5f, 0.0f, 0.0f,      // 0 the bottom left
-             0.5f, -0.5f, 1.0f, 0.0f,      // 1 the bottom right side
-             0.5f,  0.5f, 1.0f, 1.0f,      // 2 the top right
-            -0.5f,  0.5f, 0.0f, 1.0f,      // 3 the top left
-            */
-            // X      Y     Z     R     G     B     U     V
-            -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,  // 0
-         0.5f, -0.5f, -0.5f, 1.0f, 0.0f,      // 1
-         0.5f,  0.5f, -0.5f, 1.0f, 1.0f,      // 2
-         //0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,      // 2
-        -0.5f,  0.5f, -0.5f, 0.0f, 1.0f,      // 3
-        //-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,      // 0
 
-        -0.5f, -0.5f,  0.5f, 0.0f, 0.0f,      // 4
-         0.5f, -0.5f,  0.5f, 1.0f, 0.0f,      // 5
-         0.5f,  0.5f,  0.5f, 1.0f, 1.0f,      // 6
-         //0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,      // 6
-        -0.5f,  0.5f,  0.5f, 0.0f, 1.0f,      // 7
-        //-0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,      // 4
+            /* Normalized Device Coordinates (NDC) [-1, 1]*/            
+            // X      Y     Z     U     V
+            -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,    // vertex 0
+             0.5f, -0.5f, -0.5f, 1.0f, 0.0f,    // vertex 1
+             0.5f,  0.5f, -0.5f, 1.0f, 1.0f,    // vertex 2
+            -0.5f,  0.5f, -0.5f, 0.0f, 1.0f,    // vertex 3        
 
-        -0.5f,  0.5f,  0.5f, 1.0f, 0.0f,      // 8
-        -0.5f,  0.5f, -0.5f, 1.0f, 1.0f,      // 9
-        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,      // 10
-        //-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,      // 10
-        //-0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,      // 4
-        //-0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,      // 8
+            -0.5f, -0.5f,  0.5f, 0.0f, 0.0f,    // vertex 4
+             0.5f, -0.5f,  0.5f, 1.0f, 0.0f,    // vertex 5
+             0.5f,  0.5f,  0.5f, 1.0f, 1.0f,    // vertex 6         
+            -0.5f,  0.5f,  0.5f, 0.0f, 1.0f,    // vertex 7        
 
-         0.5f,  0.5f,  0.5f, 1.0f, 0.0f,      // 11
-         //0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,      // 2
-         0.5f, -0.5f, -0.5f, 0.0f, 1.0f,      // 12
-         //0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,      // 12
-         0.5f, -0.5f,  0.5f, 0.0f, 0.0f,      // 13
-         //0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,      // 11
+            -0.5f,  0.5f,  0.5f, 1.0f, 0.0f,    // vertex 8
+            -0.5f,  0.5f, -0.5f, 1.0f, 1.0f,    // vertex 9
+            -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,    // vertex 10        
 
-        //-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,      // 10
-         0.5f, -0.5f, -0.5f, 1.0f, 1.0f,      // 14
-         //0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,      // 5
-         //0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,      // 5
-        //-0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,      // 4
-        //-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,      // 10
-
-        //-0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,      // 3
-         //0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,      // 2
-         //0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,      // 11
-         //0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,      // 11
-        -0.5f,  0.5f,  0.5f, 0.0f, 0.0f,      // 15
-        //-0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f       // 3
+             0.5f,  0.5f,  0.5f, 1.0f, 0.0f,    // vertex 11         
+             0.5f, -0.5f, -0.5f, 0.0f, 1.0f,    // vertex 12         
+             0.5f, -0.5f,  0.5f, 0.0f, 0.0f,    // vertex 13         
+        
+             0.5f, -0.5f, -0.5f, 1.0f, 1.0f,    // vertex 14         
+        
+            -0.5f,  0.5f,  0.5f, 0.0f, 0.0f,    // vertex 15        
         };
 
         /* Data sent to Index Buffer */
         unsigned int indices[] = {
-            /*0, 1, 2,    // 1st triangle has vertices 0, 1, 2
-            2, 3, 0     // 2nd triangle has vertices 2, 3, 0*/
+            0, 1, 2,    // 1st triangle has vertices 0, 1, 2
+            2, 3, 0,    // 2nd triangle has vertices 2, 3, 0
 
-            0, 1, 2,
-            2, 3, 0,
+            4, 5, 6,    // 3rd triangle has vertices 4, 5, 6
+            6, 7, 4,    // 4th triangle has vertices 6, 7, 4
 
-            4, 5, 6,
-            6, 7, 4,
+            8, 9, 10,   // 5th triangle has vertices 8, 9, 10
+            10, 4, 8,   // 6th triangle has vertices 10, 4, 8
 
-            8, 9, 10,
-            10, 4, 8,
+            11, 2, 12,  // 7th triangle has vertices 11, 2, 12
+            12, 13, 11, // 8th triangle has vertices 12, 13, 11
 
-            11, 2, 12,
-            12, 13, 11,
+            10, 14, 5,  // 9th triangle has vertices 10, 14, 5
+            5, 4, 10,   // 10th triangle has vertices 5, 4, 10
 
-            10, 14, 5,
-            5, 4, 10,
-
-            3, 2, 11,
-            11, 15, 3
+            3, 2, 11,   // 11th triangle has vertices 3, 2, 11
+            11, 15, 3   // 12th triangle has vertices 11, 15, 3
         };
 
         //defining how openGL is going to blend alpha
@@ -145,15 +118,14 @@ int main(void)
 
         /* Declare vertex array, and send data to it */
         VertexArray va;        
-        VertexBuffer vb(positions, 36 * 5 * sizeof(float)); // 36 vertices, each with 5 elements: 3 for position (x, y, z), 2 for texture's correspondence
+        VertexBuffer vb(positions, 36 * 5 * sizeof(float)); // 36 vertices, each with 5 elements: 3 for position (x, y, z), 2 for texture coordinates
         
         /* Configure Vertex Buffer 
            Add data to be taken from the buffer, and from where.
          */
         VertexBufferLayout layout;
-        layout.Push<float>(3);  // X, Y, Z attributes
-        //layout.Push<float>(3);  // R, G, B attributes
-        layout.Push<float>(2);  // adding to more attributes
+        layout.Push<float>(3);  // position attributes (x, y, z)        
+        layout.Push<float>(2);  // texture coordinate attributes
         va.AddBuffer(vb, layout);
 
         /* Declare index buffer, specifying its elements */
@@ -171,6 +143,7 @@ int main(void)
             glm::vec3(0.0f, 0.0f, 0.0f),    // point to be centered on-screen
             glm::vec3(0.0f, 0.0f, 1.0f)     // up axis (z-axis)
         );
+        
         shader.SetUniformMat4f("u_V", view);
         
 
@@ -187,7 +160,7 @@ int main(void)
             10.0f                               // far plane
         );
         
-        shader.SetUniformMat4f("u_P", proj);    // link matrix to shader's projection uniform
+        shader.SetUniformMat4f("u_P", proj);    // link projection matrix to shader's projection uniform
 
         /* Specify texture's path, bind it, and define uniform */
         Texture texture("res/textures/doge.jpg");
@@ -210,13 +183,13 @@ int main(void)
         // to create the animation that change the color 
         float r = 0.0f;
         float increment = 0.05f;
-        glEnable(GL_DEPTH_TEST);
+        GLCall(glEnable(GL_DEPTH_TEST));
 
         /* Loop until the user closes the window */
         while (!glfwWindowShouldClose(window))
         {            
             /* Render here */
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
             //renderer.Clear();
 
             // use the shader and bind the buffer and ibo each time in case that the buffer change
@@ -242,15 +215,10 @@ int main(void)
             /* DRAW CALL */
             GLCall(glDrawElements(
                 GL_TRIANGLES,       // drawing triangles
-                36,                 // 36 indices
+                36,                 // 36 indices in index buffer
                 GL_UNSIGNED_INT,    // type of data in index buffer
                 nullptr)            // pointer to index buffer (null because already bound)
-            );/*
-            GLCall(glDrawArrays(
-                GL_TRIANGLES,   // drawing triangles
-                0,
-                36              // 1 cube = 6 sides * 2 triangles * 3 vertices
-            ));*/
+            );
 
             //part of the animation
             if (r > 1.0f)

@@ -1,4 +1,4 @@
-/*This code uses Modern OpenGL to render geometry, 
+ï»¿/*This code uses Modern OpenGL to render geometry, 
     and uses an abstraction of the VertexBuffer, VertexArray, and Shader.
   The code is based on The Cherno OpenGL tutorial in https://youtube.com/playlist?list=PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2
 */
@@ -149,9 +149,10 @@ int main(void)
 
         /* PROJECTION MATRIX
          * Using transformations      
-         * Generar matriz de proyección, y ajustarlo a un cuadrado.
+         * Generar matriz de proyecciï¿½n, y ajustarlo a un cuadrado.
          * Specify boundaries of window: any position outside them will not appear.
          * Multiplies array of vertex positions => Converted to [-1, 1] space
+         * Change it to be pixel space (1:1 mapping), based on window resolution
          */
         glm::mat4 proj = glm::perspective(      // create perspective projection matrix
             glm::radians(45.0f),                // vertical field-of-view
@@ -165,10 +166,10 @@ int main(void)
         /* Specify texture's path, bind it, and define uniform */
         Texture texture("res/textures/doge.jpg");
         texture.Bind();
-        /* Identifica lo que está en el buffer (u_Texture), es lo que se usará en el fragment shader.*/
-        /* buscará ese texture en el slot de las texturas especificado */
+        /* Identifica lo que estï¿½ en el buffer (u_Texture), es lo que se usarï¿½ en el fragment shader.*/
+        /* buscarï¿½ ese texture en el slot de las texturas especificado */
         /* => encontrar en el shader el nombre especificado, y asignar ese valor*/
-        /* A´sígnale a u_Texture lo que se encuentra en el slot 0*/
+        /* Aï¿½sï¿½gnale a u_Texture lo que se encuentra en el slot 0*/
         shader.SetUniform1i("u_Texture", 0);  //the slot is 0
 
         /* Clean memory up */
@@ -206,7 +207,7 @@ int main(void)
             glm::mat4 model = glm::mat4(1.0f);      // Model matrix initialized as 4x4 identity matrix
             model = glm::rotate(
                 model,                
-                time * glm::radians(180.0f),        // rotates 180°
+                time * glm::radians(180.0f),        // rotates 180ï¿½
                 glm::vec3(0.0f, 0.0f, 1.0f)         // around z-axis
             );
             

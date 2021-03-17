@@ -99,6 +99,11 @@ int main(void)
         shader.Bind();
         shader.SetUniform4f("u_Color", 0.2f, 0.3f, 0.8f, 1.0f);
 
+        /* TRANSFORMATION MATRICES----------------*/
+        /* Model matrix */
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::rotate(model, glm::radians(-45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+        
         /* Using transformations      
          * Generar matriz de proyección, y ajustarlo a un cuadrado.
          * Specify boundaries of window: any position outside them will not appear.
@@ -118,7 +123,7 @@ int main(void)
 
 
         /* Specify texture's path, bind it, and define uniform */
-        Texture texture("res/textures/texture0.png");
+        Texture texture("res/textures/doge.jpg");
         texture.Bind();
         /* Identifica lo que está en el buffer (u_Texture), es lo que se usará en el fragment shader.*/
         /* buscará ese texture en el slot de las texturas especificado */

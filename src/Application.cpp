@@ -83,9 +83,8 @@ int main(void)
        
 
         /* Declare vertex array, and send data to it */
-        VertexArray va;
-        /* 4 elements, each has 4 elements:  2 for position, 2 for texture's corrspondence */
-        VertexBuffer vb(positions, 4 * 4 * sizeof(float)); // expand the buffer to 4 elements per vertex
+        VertexArray va;        
+        VertexBuffer vb(positions, 4 * 4 * sizeof(float)); // 4 vertices, each with 4 elements:  2 for position, 2 for texture's corrspondence
         
         /* Configure Vertex Buffer 
            Add data to be taken from the buffer, and from where.
@@ -103,26 +102,30 @@ int main(void)
         shader.Bind();
         shader.SetUniform4f("u_Color", 0.2f, 0.3f, 0.8f, 1.0f);
 
-        /* TRANSFORMATION MATRICES----------------*/
+
+        /* VIEW MATRIX */                   
+        glm::mat4 view = glm::lookAt(       // lookAt function simulates moving camera.
+            glm::vec3(1.2f, 1.2f, 1.2f),    // camera position
+            glm::vec3(0.0f, 0.0f, 0.0f),    // point to be centered on-screen
+            glm::vec3(0.0f, 0.0f, 1.0f)     // up axis (z-axis)
+        );
+        shader.SetUniformMat4f("u_V", view);
         
-        
-        /* Using transformations      
+
+        /* PROJECTION MATRIX
+         * Using transformations      
          * Generar matriz de proyección, y ajustarlo a un cuadrado.
          * Specify boundaries of window: any position outside them will not appear.
          * Multiplies array of vertex positions => Converted to [-1, 1] space
          */
-        glm::mat4 proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
-        /* Link matrix to shader's projection uniform */
-        shader.SetUniformMat4f("u_MVP", proj);
-
-        /* GLM rotation matrix 
-         * Initialized with identity matrix
-         */
-        glm::mat4 rotation = glm::mat4(1.0f);
-        /* Rotate said matrix by 90 radians */
-        rotation = glm::rotate(rotation, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-        shader.SetUniformMat4f("u_MVR", rotation);
-
+        glm::mat4 proj = glm::perspective(      // create perspective projection matrix
+            glm::radians(45.0f),                // vertical field-of-view
+            800.0f / 600.0f,                    // aspect ration of the screen
+            1.0f,                               // near plane
+            10.0f                               // far plane
+        );
+        
+        shader.SetUniformMat4f("u_P", proj);    // link matrix to shader's projection uniform
 
         /* Specify texture's path, bind it, and define uniform */
         Texture texture("res/textures/doge.jpg");
@@ -135,9 +138,9 @@ int main(void)
 
         /* Clean memory up */
         va.Unbind();
-        vb.Unbind();    //GLCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
-        ib.Unbind();    //GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
-        shader.UnBind();  //GLCall(glUseProgram(0));
+        vb.Unbind();
+        ib.Unbind();
+        shader.UnBind();
         
         /* Declare renderer */
         Renderer renderer;
@@ -150,26 +153,27 @@ int main(void)
         while (!glfwWindowShouldClose(window))
         {            
             /* Render here */
-            renderer.Clear();  //GLCall(glClear(GL_COLOR_BUFFER_BIT));
+            renderer.Clear();
 
             // use the shader and bind the buffer and ibo each time in case that the buffer change
-            shader.Bind();   //GLCall(glUseProgram(shader));
-            shader.SetUniform4f("u_Color", r, 0.3f, 0.8f, 1.0f);   //GLCall(glUniform4f(location, r, 0.3f, 0.8f, 1.0f));
+            shader.Bind();
+            shader.SetUniform4f("u_Color", r, 0.3f, 0.8f, 1.0f);
 
             /* Draw what's sent through vertex array, index buffer, and shader */
             renderer.Draw(va, ib, shader);
 
-            /* Model matrix */
+            /* MODEL MATRIX */
             auto t_now = std::chrono::high_resolution_clock::now();
             float time = std::chrono::duration_cast<std::chrono::duration<float>>(t_now - t_start).count();
-
-            glm::mat4 model = glm::mat4(1.0f);
+            
+            glm::mat4 model = glm::mat4(1.0f);      // Model matrix initialized as 4x4 identity matrix
             model = glm::rotate(
-                model,
-                time * glm::radians(180.0f),
-                glm::vec3(0.0f, 0.0f, 1.0f)
+                model,                
+                time * glm::radians(180.0f),        // rotates 180°
+                glm::vec3(0.0f, 0.0f, 1.0f)         // around z-axis
             );
-            shader.SetUniformMat4f("u_M", model);
+            
+            shader.SetUniformMat4f("u_M", model);   // perform model transformation in vertex shader
 
             /* DRAW CALL */
             GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
